@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     
-    let itemArray = ["Find Mike", "Buy Eggs", "Fuck af"]
+    var itemArray = ["Find Mike", "Buy Eggs", "Fuck af"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +20,7 @@ class ToDoListViewController: UITableViewController {
     //MARK - Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexpath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
         cell.textLabel?.text = itemArray[indexPath.row]
         
@@ -41,8 +41,33 @@ class ToDoListViewController: UITableViewController {
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
-        
     }
+    
+    //MARK - Add new items
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var input = UITextField()
+        //Laver vores alert popup
+        let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
+        //Laver vores action knap, navnet på hvad knappen
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            //What will happen once the user clicks the Add Item Button on our UIALert
+            if input.text! != "" {
+                self.itemArray.append(input.text!)
+                self.tableView.reloadData()
+            }
+        }
+        //Tilføjer et tekstfelt til vores alert som user kan skrive i
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            input = alertTextField
+        }
+        
+        //Tilføjer vores action knap til vores alert pooup
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
     
 }
 
